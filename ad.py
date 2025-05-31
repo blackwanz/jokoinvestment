@@ -7,26 +7,48 @@ def run_git_command(cmd, desc=""):
         result = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if desc:
             print(f"[OK] {desc}")
+        if result.stdout.strip():
+            print(result.stdout.strip())
+        if result.stderr.strip():
+            print("STDERR:", result.stderr.strip())
         return result.stdout.strip()
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] {desc}: {e.stderr.strip()}")
         return None
 
-def has_changes():
-    status = run_git_command(["git", "status", "--porcelain"], "Checking for changes")
+def has_unstaged_changes():
+    # Check if working directory has any changes (tracked/untracked/deleted)
+    status = run_git_command(["git", "status", "--porcelain"], "Checking for unstaged changes")
     return bool(status)
 
-def auto_commit():
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))  # Ensure script runs from repo directory
+def has_staged_changes():
+    # Check if staging area has any changes (ready to commit)
+    # git diff --cached --quiet returns 0 if no changes, 1 if changes
+    try:
+        subprocess.run(["git", "diff", "--cached", "--quiet"], check=True)
+        return False  # no staged changes
+    except subprocess.CalledProcessError:
+        return True  # staged changes present
 
-    if not has_changes():
+def auto_commit():
+    repo_dir = os.path.dirname(os.path.abspath(__file__))
+    print(f"Changing directory to repo: {repo_dir}")
+    os.chdir(repo_dir)
+
+    if not has_unstaged_changes():
         print("Nothing to commit. Working directory clean.")
+        return
+
+    # Stage all changes including deletions
+    run_git_command(["git", "add", "-A"], "Staging all changes including deletions")
+
+    if not has_staged_changes():
+        print("Nothing staged. Nothing to commit.")
         return
 
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     commit_msg = f"Auto commit on {timestamp}"
 
-    run_git_command(["git", "add", "."], "Staging changes")
     run_git_command(["git", "commit", "-m", commit_msg], "Committing")
     run_git_command(["git", "push", "origin", "master"], "Pushing to GitHub")
 
