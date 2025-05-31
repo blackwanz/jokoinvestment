@@ -1,0 +1,24 @@
+[2025-05-31 08:12:55] Working directory: C:\Users\Orang  Kaya\Desktop\upload
+[2025-05-31 08:12:55] === Starting Git Auto Commit ===
+[2025-05-31 08:12:55] > Running: C:\Users\Orang  Kaya\Desktop\upload status --porcelain
+[2025-05-31 08:12:56] Working directory: C:\Users\Orang  Kaya\Desktop\upload
+[2025-05-31 08:12:56] === Starting Git Auto Commit ===
+[2025-05-31 08:12:56] > Running: C:\Users\Orang  Kaya\Desktop\upload status --porcelain
+[2025-05-31 08:13:18] Working directory: C:\Users\Orang  Kaya\Desktop\upload
+[2025-05-31 08:13:18] === Starting Git Auto Commit ===
+[2025-05-31 08:13:18] > Running: C:\Users\Orang  Kaya\Desktop\upload status --porcelain
+[2025-05-31 08:13:42] Working directory: C:\Users\Orang  Kaya\Desktop\upload
+[2025-05-31 08:13:42] === Starting Git Auto Commit ===
+[2025-05-31 08:13:42] > Running: C:\Users\Orang  Kaya\Desktop\upload status --porcelain
+[2025-05-31 08:13:43] Working directory: C:\Users\Orang  Kaya\Desktop\upload
+[2025-05-31 08:13:43] === Starting Git Auto Commit ===
+[2025-05-31 08:13:43] > Running: C:\Users\Orang  Kaya\Desktop\upload status --porcelain
+[2025-05-31 08:15:45] Working directory: C:\Users\Orang  Kaya\Desktop\upload
+[2025-05-31 08:15:45] === Starting Git Auto Commit ===
+[2025-05-31 08:15:45] > Running: C:\Program Files\Git\cmd\git.EXE status --porcelain
+[2025-05-31 08:15:46] D "git_commit - Copy - Copy.spec"
+ D "git_commit - Copy.spec"
+ M git_commit.py
+?? git_log.txt
+[2025-05-31 08:15:46] [OK] Checking for changes
+[2025-05-31 08:15:46] > Running: C:\Program Files\Git\cmd\git.EXE add -A

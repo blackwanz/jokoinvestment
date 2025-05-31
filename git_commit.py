@@ -1,58 +1,69 @@
 import subprocess
 from datetime import datetime
 import os
+import shutil
 
-def run_git_command(cmd, desc=""):
-    try:
-        result = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        if desc:
-            print(f"[OK] {desc}")
-        if result.stdout.strip():
-            print(result.stdout.strip())
-        if result.stderr.strip():
-            print("STDERR:", result.stderr.strip())
-        return result.stdout.strip()
-    except subprocess.CalledProcessError as e:
-        print(f"[ERROR] {desc}: {e.stderr.strip()}")
+LOG_FILE = "git_log.txt"
+
+def log(message):
+    timestamp = datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
+    entry = f"{timestamp} {message}\n"
+    print(entry.strip())
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(entry)
+
+def run_git_command(args, desc=""):
+    git_path = shutil.which("git")
+    if not git_path:
+        log("[ERROR] Git executable not found in PATH.")
         return None
 
-def has_unstaged_changes():
-    # Check if working directory has any changes (tracked/untracked/deleted)
-    status = run_git_command(["git", "status", "--porcelain"], "Checking for unstaged changes")
-    return bool(status)
+    try:
+        full_cmd = [git_path] + args
+        log(f"> Running: {' '.join(full_cmd)}")
+        result = subprocess.run(full_cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        if result.stdout.strip():
+            log(result.stdout.strip())
+        if result.stderr.strip():
+            log("STDERR: " + result.stderr.strip())
+        log(f"[OK] {desc}")
+        return result.stdout.strip()
+    except subprocess.CalledProcessError as e:
+        log(f"[ERROR] {desc}: {e.stderr.strip()}")
+        return None
+
+def has_changes():
+    result = run_git_command(["status", "--porcelain"], "Checking for changes")
+    return bool(result)
 
 def has_staged_changes():
-    # Check if staging area has any changes (ready to commit)
-    # git diff --cached --quiet returns 0 if no changes, 1 if changes
     try:
         subprocess.run(["git", "diff", "--cached", "--quiet"], check=True)
-        return False  # no staged changes
+        return False
     except subprocess.CalledProcessError:
-        return True  # staged changes present
+        return True
 
 def auto_commit():
     repo_dir = os.path.dirname(os.path.abspath(__file__))
-    print(f"Changing directory to repo: {repo_dir}")
     os.chdir(repo_dir)
+    log(f"Working directory: {repo_dir}")
+    log("=== Starting Git Auto Commit ===")
 
-    if not has_unstaged_changes():
-        print("Nothing to commit. Working directory clean.")
+    if not has_changes():
+        log("Nothing to commit. Working directory clean.")
         return
 
-    # Stage all changes including deletions
-    run_git_command(["git", "add", "-A"], "Staging all changes including deletions")
+    run_git_command(["add", "-A"], "Staging all changes")
 
     if not has_staged_changes():
-        print("Nothing staged. Nothing to commit.")
+        log("Nothing staged after git add. Exiting.")
         return
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    commit_msg = f"Auto commit on {timestamp}"
+    commit_msg = f"Auto commit on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    run_git_command(["commit", "-m", commit_msg], "Committing changes")
+    run_git_command(["push", "origin", "master"], "Pushing to remote")
 
-    run_git_command(["git", "commit", "-m", commit_msg], "Committing")
-    run_git_command(["git", "push", "origin", "master"], "Pushing to GitHub")
-
-    print("✅ Auto commit and push complete.")
+    log("✅ Auto commit and push complete.\n")
 
 if __name__ == "__main__":
     auto_commit()
