@@ -1,0 +1,142 @@
+import os
+import sys
+import time
+import logging
+from datetime import datetime
+from docx import Document
+from docx.shared import Inches
+import pyautogui
+from PIL import Image  # For image manipulation (though not directly used in this version)
+
+# Setup logging to write to a file
+log_filename = "screenshot_log.txt"
+logging.basicConfig(filename=log_filename, level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Function to get the directory of the current script (works for both normal and packaged executable)
+def get_script_directory():
+    # Check if running from a bundled executable (PyInstaller)
+    if getattr(sys, 'frozen', False):
+        # PyInstaller sets sys.frozen to True, and sys._MEIPASS points to the temp folder with the extracted files
+        # But we want the folder where the executable is located (not the temp folder)
+        logging.debug("Running from bundled executable, using executable's directory.")
+        return os.path.dirname(sys.executable)  # Use the directory of the executable
+    else:
+        # Running as a normal script
+        logging.debug("Running as a normal script, using the script's directory.")
+        return os.path.dirname(os.path.abspath(__file__))
+
+# Function to create a timestamp with microseconds
+def get_timestamp():
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
+    return timestamp
+
+# Function to take a screenshot
+def take_screenshot():
+    logging.debug("Attempting to take a screenshot...")
+    
+    screenshot = pyautogui.screenshot()
+    timestamp = get_timestamp()
+
+    # Get the absolute path for the screenshots folder
+    screenshots_folder = os.path.join(get_script_directory(), 'screenshots')
+
+    # Ensure the folder exists
+    if not os.path.exists(screenshots_folder):
+        os.makedirs(screenshots_folder)
+        logging.debug(f"Created screenshots folder at {screenshots_folder}")
+    
+    # Define the screenshot file path
+    screenshot_filename = os.path.join(screenshots_folder, f'screenshot_{timestamp}.png')
+
+    screenshot.save(screenshot_filename)
+    
+    logging.debug(f"Screenshot saved successfully: {screenshot_filename}")
+    return screenshot_filename
+
+# Function to create or update the Word document
+def update_word_document(doc, screenshot_filename, append_to_current_row=False):
+    screenshots_folder = os.path.join(get_script_directory(), 'screenshots')
+
+    # Ensure the folder exists
+    if not os.path.exists(screenshots_folder):
+        os.makedirs(screenshots_folder)
+
+    # Use an absolute path for saving the document
+    doc_path = os.path.join(screenshots_folder, 'screenshots_table.docx')
+
+    # Create a new document or open the existing one
+    if not os.path.exists(doc_path):
+        doc = Document()
+        doc.add_heading('Unit Testing', 0)
+        doc.add_paragraph(f'Date: 21 Maret 2025')
+        doc.add_paragraph("")
+        table = doc.add_table(rows=1, cols=3)
+        table.style = 'Table Grid'
+        hdr_cells = table.rows[0].cells
+        hdr_cells[0].text = 'Column 1'
+        hdr_cells[1].text = 'Column 2'
+        hdr_cells[2].text = 'Screenshot'
+    else:
+        doc = Document(doc_path)
+        # Ensure the document contains the necessary table
+        if not doc.tables:
+            doc.add_heading('Unit Testing', 0)
+            doc.add_paragraph(f'Date: 21 Maret 2025')
+            doc.add_paragraph("")
+            table = doc.add_table(rows=1, cols=3)
+            table.style = 'Table Grid'
+            hdr_cells = table.rows[0].cells
+            hdr_cells[0].text = 'Column 1'
+            hdr_cells[1].text = 'Column 2'
+            hdr_cells[2].text = 'Screenshot'
+        else:
+            table = doc.tables[0]  # Get the first table
+
+    # If we are appending to the current row (parameter is True)
+    if append_to_current_row:
+        # Get the last row of the table
+        if table.rows:
+            last_row = table.rows[-1]
+            last_cell = last_row.cells[2]  # The screenshot column (third column)
+
+            # Add a line break and add the image to the same cell in column 3
+            paragraph = last_cell.add_paragraph()  # Get or add a new paragraph
+            paragraph.add_run().add_picture(screenshot_filename, width=Inches(5.0))
+        else:
+            # If no rows exist (only header), add a new row and then the image
+            row_cells = table.add_row().cells
+            row_cells[0].text = ''
+            row_cells[1].text = ''
+            row_cells[2].paragraphs[0].add_run().add_picture(screenshot_filename, width=Inches(5.0))
+    else:
+        # When parameter is False, create a new row and add the image there
+        row_cells = table.add_row().cells
+        row_cells[0].text = ''  # Empty Column 1
+        row_cells[1].text = ''  # Empty Column 2
+        row_cells[2].paragraphs[0].add_run().add_picture(screenshot_filename, width=Inches(5.0))
+
+    # Save the document after updating
+    doc.save(doc_path)
+    logging.debug(f"Word document updated and saved as '{doc_path}'.")
+
+# Function to capture screenshot and update the document
+def capture_and_update(append_to_current_row=None):
+    screenshot_filename = take_screenshot()  # Capture the screenshot
+
+    # If no parameter is passed, default to False (insert a new row)
+    if append_to_current_row is None:
+        append_to_current_row = False
+
+    update_word_document(None, screenshot_filename, append_to_current_row)
+    logging.debug("Screenshot taken and document updated.")
+
+# Main function to handle command-line arguments
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        # Get the argument (first argument) and convert it to a boolean (True or False)
+        append_to_current_row = sys.argv[1].lower() == 'true'
+    else:
+        append_to_current_row = False  # Default to False (new row)
+
+    # Call the function with the parsed parameter
+    capture_and_update(append_to_current_row)
