@@ -71,3 +71,27 @@
  M git_log.txt
 [2025-05-31 08:20:01] [OK] Checking for changes
 [2025-05-31 08:20:01] > Running: C:\Program Files\Git\cmd\git.EXE add -A
+[2025-05-31 08:20:01] [OK] Staging all changes
+[2025-05-31 08:20:01] > Running: C:\Program Files\Git\cmd\git.EXE commit -m Auto commit on 2025-05-31 08:20:01
+[2025-05-31 08:20:01] [master aeb46b3] Auto commit on 2025-05-31 08:20:01
+ 2 files changed, 19 insertions(+), 38 deletions(-)
+ delete mode 100644 git_commit - Copy.spec
+[2025-05-31 08:20:01] [OK] Committing changes
+[2025-05-31 08:20:01] > Running: C:\Program Files\Git\cmd\git.EXE push origin master
+[2025-05-31 08:20:04] STDERR: To https://github.com/blackwanz/jokoinvestment
+   5be0885..aeb46b3  master -> master
+[2025-05-31 08:20:04] [OK] Pushing to remote
+[2025-05-31 08:20:04] ✅ Auto commit and push complete.
+
+[2025-06-02 07:08:16] Working directory: C:\Users\Orang  Kaya\Desktop\upload
+[2025-06-02 07:08:16] === Starting Git Auto Commit ===
+[2025-06-02 07:08:16] > Running: C:\Program Files\Git\cmd\git.EXE status --porcelain
+[2025-06-02 07:08:16] D "Phyton Final Source/chg.py"
+ D dist/git_commit.exe
+ D git_commit.exe
+ M git_log.txt
+?? "Phyton Final Source/chg.txt"
+?? dist.zip
+?? dist/UT_FORMAT.exe
+[2025-06-02 07:08:16] [OK] Checking for changes
+[2025-06-02 07:08:16] > Running: C:\Program Files\Git\cmd\git.EXE add -A
