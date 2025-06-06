@@ -158,3 +158,39 @@
 ?? React/
 [2025-06-06 16:33:28] [OK] Checking for changes
 [2025-06-06 16:33:28] > Running: C:\Program Files\Git\cmd\git.EXE add -A
+[2025-06-06 16:33:28] STDERR: warning: in the working copy of 'React/package.json', LF will be replaced by CRLF the next time Git touches it
+warning: adding embedded git repository: React/robotic-site
+hint: You've added another git repository inside your current repository.
+hint: Clones of the outer repository will not contain the contents of
+hint: the embedded repository and will not know how to obtain it.
+hint: If you meant to add a submodule, use:
+hint:
+hint: 	git submodule add <url> React/robotic-site
+hint:
+hint: If you added this path by mistake, you can remove it from the
+hint: index with:
+hint:
+hint: 	git rm --cached React/robotic-site
+hint:
+hint: See "git help submodule" for more information.
+hint: Disable this message with "git config advice.addEmbeddedRepo false"
+[2025-06-06 16:33:28] [OK] Staging all changes
+[2025-06-06 16:33:28] > Running: C:\Program Files\Git\cmd\git.EXE commit -m Auto commit on 2025-06-06 16:33:28
+[2025-06-06 16:33:28] [master 26d77cb] Auto commit on 2025-06-06 16:33:28
+ 3 files changed, 31 insertions(+)
+ create mode 100644 React/package.json
+ create mode 160000 React/robotic-site
+[2025-06-06 16:33:28] [OK] Committing changes
+[2025-06-06 16:33:28] > Running: C:\Program Files\Git\cmd\git.EXE push origin master
+[2025-06-06 16:33:32] STDERR: To https://github.com/blackwanz/jokoinvestment
+   8a0817c..26d77cb  master -> master
+[2025-06-06 16:33:32] [OK] Pushing to remote
+[2025-06-06 16:33:32] ✅ Auto commit and push complete.
+
+[2025-06-06 16:37:39] Working directory: C:\Users\Orang  Kaya\Desktop\upload
+[2025-06-06 16:37:39] === Starting Git Auto Commit ===
+[2025-06-06 16:37:39] > Running: C:\Program Files\Git\cmd\git.EXE status --porcelain
+[2025-06-06 16:37:39] M React/robotic-site
+ M git_log.txt
+[2025-06-06 16:37:39] [OK] Checking for changes
+[2025-06-06 16:37:39] > Running: C:\Program Files\Git\cmd\git.EXE add -A
