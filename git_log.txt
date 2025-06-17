@@ -44,3 +44,43 @@
 ?? React/src/
 [2025-06-07 19:59:52] [OK] Checking for changes
 [2025-06-07 19:59:52] > Running: C:\Program Files\Git\cmd\git.EXE add -A
+[2025-06-07 19:59:52] STDERR: warning: in the working copy of 'React/src/App.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'React/src/App.test.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'React/src/index.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'React/src/reportWebVitals.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'React/src/setupTests.js', LF will be replaced by CRLF the next time Git touches it
+[2025-06-07 19:59:52] [OK] Staging all changes
+[2025-06-07 19:59:52] > Running: C:\Program Files\Git\cmd\git.EXE commit -m Auto commit on 2025-06-07 19:59:52
+[2025-06-07 19:59:53] [master f221b24] Auto commit on 2025-06-07 19:59:52
+ 18 files changed, 979 insertions(+)
+ create mode 100644 React/src/App.css
+ create mode 100644 React/src/App.jsx
+ create mode 100644 React/src/App.test.js
+ create mode 100644 React/src/components/DataDiriForm.jsx
+ create mode 100644 React/src/components/FotoPage.jsx
+ create mode 100644 React/src/components/Gallery.jsx
+ create mode 100644 React/src/components/Header.jsx
+ create mode 100644 React/src/components/PhotoModal.jsx
+ create mode 100644 React/src/components/UploadForm.jsx
+ create mode 100644 React/src/firebase.js
+ create mode 100644 React/src/index.css
+ create mode 100644 React/src/index.jsx
+ create mode 100644 React/src/logo.svg
+ create mode 100644 React/src/reportWebVitals.js
+ create mode 100644 React/src/setupTests.js
+ create mode 100644 React/src/supabaseClient.js
+ create mode 100644 React/src/vite.config.js
+[2025-06-07 19:59:53] [OK] Committing changes
+[2025-06-07 19:59:53] > Running: C:\Program Files\Git\cmd\git.EXE push origin master
+[2025-06-07 19:59:56] STDERR: To https://github.com/blackwanz/jokoinvestment
+   cb748ef..f221b24  master -> master
+[2025-06-07 19:59:56] [OK] Pushing to remote
+[2025-06-07 19:59:56] ✅ Auto commit and push complete.
+
+[2025-06-17 08:17:11] Working directory: C:\Users\Orang  Kaya\Desktop\upload
+[2025-06-17 08:17:11] === Starting Git Auto Commit ===
+[2025-06-17 08:17:11] > Running: C:\Program Files\Git\cmd\git.EXE status --porcelain
+[2025-06-17 08:17:11] M React/robotic-site
+ M git_log.txt
+[2025-06-17 08:17:11] [OK] Checking for changes
+[2025-06-17 08:17:11] > Running: C:\Program Files\Git\cmd\git.EXE add -A
